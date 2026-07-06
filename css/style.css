@@ -1,0 +1,46 @@
+body {
+  background-color: #000;
+}
+
+.content {
+  color: #fff;
+  background-color: #494949;
+  border-radius: 10px;
+  width: 50%;
+  margin: auto;
+}
+.content .head i {
+  background-color: rgb(57, 57, 145);
+  color: #fff;
+  font-size: 20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.content form {
+  width: 90%;
+  margin: auto;
+}
+.content form label {
+  font-size: 18px;
+  font-weight: 600;
+}
+.content form input[type=file] {
+  width: 50%;
+}
+.content form .password {
+  position: relative;
+}
+.content form .password i {
+  position: absolute;
+  right: 20px;
+  cursor: pointer;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #494949;
+}
+
+/*# sourceMappingURL=style.css.map */

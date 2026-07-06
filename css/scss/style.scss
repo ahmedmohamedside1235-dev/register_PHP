@@ -1,0 +1,51 @@
+body {
+    background-color: #000;
+}
+
+.content {
+    color: #fff;
+    background-color: #494949;
+    border-radius: 10px;
+    width: 50%;
+    margin: auto;
+
+    .head {
+        i {
+            background-color: rgb(57, 57, 145);
+            color: #fff;
+            font-size: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
+    form {
+        width: 90%;
+        margin: auto;
+
+        label {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        input[type="file"] {
+            width: 50%;
+        }
+
+        .password {
+            position: relative;
+            i {
+                position: absolute;
+                right: 20px;
+                cursor: pointer;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #494949;
+            }
+        }
+    }
+}
