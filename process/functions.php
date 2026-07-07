@@ -42,10 +42,20 @@ function checkImage(array &$error_empty, array &$old_values, bool $bool = true)
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0777, true);
         }
-        $uploadPath = "$uploadDir/{$newFileName}";
+        $uploadPath = "$uploadDir/$newFileName";
         if (!move_uploaded_file($fileTmpName, $uploadPath)) {
             $error_empty['image'] = "Failed to upload image";
             return;
+        }
+
+        if(!$noFileUploaded){
+            $oldImage = $_SESSION['user']['image'] ?? "";
+            if ($oldImage && $oldImage !== 'default.jpg') {
+                $oldImagePath = "$uploadDir/$oldImage";
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
+                }
+            }   
         }
     }
 }
@@ -119,7 +129,7 @@ function validateName(array &$error_empty, array &$old_values)
 {
     $name = $_REQUEST['name'] ?? '';
     $old_values['name'] = $name;
-    if (!preg_match("/^[a-zA-Z\s]+(\s+[a-zA-Z]+){0,2}$/", $name)) {
+    if (!preg_match("/^[a-zA-Z]+(\s+[a-zA-Z]+){0,2}$/", $name)) {
         $error_empty['name'] = "Please enter a valid name using letters only (up to 3 words)";
     }
 }
