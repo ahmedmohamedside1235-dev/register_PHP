@@ -129,8 +129,8 @@ function validateName(array &$error_empty, array &$old_values)
 {
     $name = $_REQUEST['name'] ?? '';
     $old_values['name'] = $name;
-    if (!preg_match("/^[a-zA-Z]+(\s+[a-zA-Z]+){0,2}$/", $name)) {
-        $error_empty['name'] = "Please enter a valid name using letters only (up to 3 words)";
+    if (!preg_match("/^[a-zA-Z]{3,}(\s+[a-zA-Z]{3,}){0,2}$/", $name)) {
+        $error_empty['name'] = "Each word must be at least 3 letters long (up to 3 words)";
     }
 }
 
