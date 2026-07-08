@@ -1,6 +1,9 @@
+@use "../../../css/scss/mixin.scss" as *;
+
 html {
     &.hide-scroll {
         scrollbar-width: none;
+
         &::-webkit-scrollbar {
             width: 0;
         }
@@ -19,9 +22,24 @@ body {
     width: 40%;
     margin: auto;
 
-    .headData {
-        color: #898781;
-        font-weight: 600;
+    @include responsive(350) {
+        width: 100%;
+    }
+
+    @include responsive(450) {
+        width: 90%;
+    }
+
+    @include responsive(850) {
+        width: 60%;
+    }
+
+    @include responsive(1050) {
+        width: 50%;
+    }
+
+    @include responsive(1250) {
+        width: 40%;
     }
 
     .head {
@@ -33,17 +51,40 @@ body {
         }
     }
 
-    form {
-        width: 90%;
-        margin: auto;
-
-        label {
-            font-size: 18px;
-            font-weight: 600;
+    p {
+        @include responsive(350) {
+            font-size: 13px;
         }
 
-        input[type="file"] {
-            width: 50%;
+        @include responsive(650) {
+            font-size: initial;
+        }
+    }
+
+    .headData {
+        color: #898781;
+        font-weight: 600;
+
+        @include responsive(350) {
+            font-size: 16px;
+        }
+
+        @include responsive(650) {
+            font-size: initial;
+        }
+    }
+
+    .buttons {
+        button {
+
+            @include responsive(350) {
+                font-size: 11px;
+            }
+
+            @include responsive(650) {
+                font-size: initial;
+            }
+
         }
     }
 }
@@ -71,6 +112,26 @@ body {
         transition: all 0.7s ease-in-out;
         opacity: 0;
 
+        @include responsive(350) {
+            width: 90%;
+        }
+
+        @include responsive(450) {
+            width: 80%;
+        }
+
+        @include responsive(850) {
+            width: 60%;
+        }
+
+        @include responsive(1050) {
+            width: 50%;
+        }
+
+        @include responsive(1250) {
+            width: 40%;
+        }
+
         .head {
             i {
                 font-size: 20px;
@@ -79,7 +140,7 @@ body {
 
         form {
             label {
-                font-size: 18px;
+                font-size: 15px;
                 font-weight: 600;
             }
 
@@ -93,6 +154,35 @@ body {
                 &[type="file"] {
                     width: 60%;
                 }
+            }
+
+            input::placeholder {
+                color: #777;
+            }
+
+            .password {
+                position: relative;
+
+                i {
+                    position: absolute;
+                    right: 20px;
+                    cursor: pointer;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    color: #fff;
+                }
+            }
+
+            button {
+
+                @include responsive(350) {
+                    font-size: 11px;
+                }
+
+                @include responsive(650) {
+                    font-size: initial;
+                }
+
             }
         }
     }

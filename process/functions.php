@@ -4,12 +4,14 @@ function isEmptyInput(array &$error_empty, array &$old_values, string $type)
 {
     $input = $_REQUEST[$type] ?? "";
     $old_values[$type] = $input;
+    $typeUpper = "";
     if (empty($input)) {
-        $typeUpper = ucwords($type);
+        $typeUpper = ucwords(str_replace('_', ' ', $type));
         $error_empty[$type] = "$typeUpper is required";
     }
 }
 
+// upload image after validation
 $newFileName = "";
 function checkImage(array &$error_empty, array &$old_values, bool $bool = true)
 {
@@ -48,18 +50,19 @@ function checkImage(array &$error_empty, array &$old_values, bool $bool = true)
             return;
         }
 
-        if(!$noFileUploaded){
+        if (!$noFileUploaded) {
             $oldImage = $_SESSION['user']['image'] ?? "";
             if ($oldImage && $oldImage !== 'default.jpg') {
                 $oldImagePath = "$uploadDir/$oldImage";
                 if (file_exists($oldImagePath)) {
                     unlink($oldImagePath);
                 }
-            }   
+            }
         }
     }
 }
 
+// validate file image if not match image/name
 function checkValidFileImage(array &$error_empty, string $fileTmpName)
 {
     $finfo = finfo_open(FILEINFO_MIME_TYPE);
@@ -72,6 +75,7 @@ function checkValidFileImage(array &$error_empty, string $fileTmpName)
     return true;
 }
 
+// validate extention of image
 function checkValidExtention(array &$error_empty, string $fileName)
 {
     $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
@@ -83,6 +87,7 @@ function checkValidExtention(array &$error_empty, string $fileName)
     return true;
 }
 
+//check error add user
 function checkErrors(array &$error_empty, array &$old_values)
 {
     if (!empty($error_empty)) {
@@ -94,17 +99,19 @@ function checkErrors(array &$error_empty, array &$old_values)
     addUser($_REQUEST['name'], $_REQUEST['email'], $_REQUEST['language']);
 }
 
+// check if the error input is found
 function checkErrorsUpdate(array &$error_update, array &$old_values)
 {
     if (!empty($error_update)) {
         $_SESSION['error_update'] = $error_update;
         $_SESSION['old_values'] = $old_values;
-        header("Location: ../profile/profile.php?update=true");
+        header("Location: ../profile/profile.php?update=profile");
         exit;
     }
     updateUser($_REQUEST['name'], $_REQUEST['email'], $_REQUEST['language']);
 }
 
+// update the data user 
 function updateUser(string $name, string $email, string $language)
 {
     global $newFileName;
@@ -125,6 +132,7 @@ function updateUser(string $name, string $email, string $language)
 }
 
 
+// validate name
 function validateName(array &$error_empty, array &$old_values)
 {
     $name = $_REQUEST['name'] ?? '';
@@ -134,6 +142,7 @@ function validateName(array &$error_empty, array &$old_values)
     }
 }
 
+// validate email
 function validateEmail(array &$error_empty, array &$old_values)
 {
     $email = $_REQUEST['email'] ?? '';
@@ -143,6 +152,7 @@ function validateEmail(array &$error_empty, array &$old_values)
     }
 }
 
+// validate password
 function validatePassword(array &$error_empty, array &$old_values)
 {
     $password = $_REQUEST['password'] ?? '';
@@ -165,13 +175,16 @@ function validatePassword(array &$error_empty, array &$old_values)
         $error_empty['password'] = implode('<br>', $errors);
         return;
     }
+    return encryptPassword($password);
 }
 
+// encript the password
 function encryptPassword(string $password): string
 {
     return password_hash($password, PASSWORD_DEFAULT);
 }
 
+// add a new user
 function addUser(string $name, string $email, string $language): void
 {
     global $newFileName;
@@ -191,6 +204,7 @@ function addUser(string $name, string $email, string $language): void
     exit;
 }
 
+// check if the same data user in session 
 function checkIsNewData(): bool
 {
     $hasFile = isset($_FILES['image']) && $_FILES['image']['error'] !== UPLOAD_ERR_NO_FILE;
@@ -206,4 +220,53 @@ function checkIsNewData(): bool
     }
 
     return false;
+}
+
+
+// validate new password
+function validateAndUpdatePassword(array &$error_update, array &$old_values)
+{
+    $currentPassword = $_REQUEST['password'] ?? '';
+    $newPassword = $_REQUEST['New_password'] ?? '';
+    $confirmPassword = $_REQUEST['Confirm_password'] ?? '';
+
+    // check is the same password in session
+    if (!password_verify($currentPassword, $_SESSION['user']['password'])) {
+        $error_update['password'] = "Current password is incorrect";
+        return;
+    }
+
+    // check regex password
+    $errors = [];
+    if (!preg_match("/^.{8,}$/", $newPassword)) {
+        $errors[] = "* Password must be at least 8 characters long";
+    }
+    if (!preg_match("/(?=.*[A-Z])/", $newPassword)) {
+        $errors[] = "* include at least one uppercase letter";
+    }
+    if (!preg_match("/(?=.*[a-z])(?=.*\d)/", $newPassword)) {
+        $errors[] = "* include at least one lowercase letter and one number";
+    }
+    if (!preg_match("/(?=.*[\W_])/", $newPassword)) {
+        $errors[] = "* include at least one special character";
+    }
+    if (!empty($errors)) {
+        $error_update['New_password'] = implode('<br>', $errors);
+        return;
+    }
+
+    // check if the new password the same Confirm password
+    if ($newPassword !== $confirmPassword) {
+        $error_update['Confirm_password'] = "Passwords do not match";
+        return;
+    }
+
+    // check if the new pass the same current password
+    if (password_verify($newPassword, $_SESSION['user']['password'])) {
+        $error_update['New_password'] = "New password must be different from the current password";
+        return;
+    }
+
+    $_SESSION['user']['password'] = encryptPassword($newPassword);
+    $_SESSION['user']['updated_at'] = date('Y-m-d H:i:s');
 }

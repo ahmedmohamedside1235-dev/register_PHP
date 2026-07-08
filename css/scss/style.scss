@@ -1,3 +1,5 @@
+@use "../../css/scss/mixin.scss" as *;
+
 body {
     background-color: #000;
 }
@@ -8,6 +10,21 @@ body {
     border-radius: 10px;
     width: 50%;
     margin: auto;
+
+    @include responsive(350) {
+        width: 100%;
+    }
+
+    @include responsive(450) {
+        width: 90%;
+    }
+
+    @include responsive(850) {
+        width: 70%;
+    }
+    @include responsive(1050) {
+        width: 50%;
+    }
 
     .head {
         i {
@@ -38,6 +55,7 @@ body {
 
         .password {
             position: relative;
+
             i {
                 position: absolute;
                 right: 20px;

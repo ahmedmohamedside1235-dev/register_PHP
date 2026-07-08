@@ -16,9 +16,30 @@ body {
   width: 40%;
   margin: auto;
 }
-.content .headData {
-  color: #898781;
-  font-weight: 600;
+@media (max-width: 1300px) {
+  .content {
+    width: 100%;
+  }
+}
+@media (min-width: 371px) and (max-width: 1300px) {
+  .content {
+    width: 90%;
+  }
+}
+@media (min-width: 768px) and (max-width: 1300px) {
+  .content {
+    width: 60%;
+  }
+}
+@media (min-width: 992px) and (max-width: 1300px) {
+  .content {
+    width: 50%;
+  }
+}
+@media (min-width: 1181px) and (max-width: 1300px) {
+  .content {
+    width: 40%;
+  }
 }
 .content .head img {
   width: 100px;
@@ -26,16 +47,39 @@ body {
   border-radius: 50%;
   object-fit: cover;
 }
-.content form {
-  width: 90%;
-  margin: auto;
+@media (max-width: 1300px) {
+  .content p {
+    font-size: 13px;
+  }
 }
-.content form label {
-  font-size: 18px;
+@media (min-width: 576px) and (max-width: 1300px) {
+  .content p {
+    font-size: initial;
+  }
+}
+.content .headData {
+  color: #898781;
   font-weight: 600;
 }
-.content form input[type=file] {
-  width: 50%;
+@media (max-width: 1300px) {
+  .content .headData {
+    font-size: 16px;
+  }
+}
+@media (min-width: 576px) and (max-width: 1300px) {
+  .content .headData {
+    font-size: initial;
+  }
+}
+@media (max-width: 1300px) {
+  .content .buttons button {
+    font-size: 11px;
+  }
+}
+@media (min-width: 576px) and (max-width: 1300px) {
+  .content .buttons button {
+    font-size: initial;
+  }
 }
 
 .popup {
@@ -61,11 +105,36 @@ body {
   transition: all 0.7s ease-in-out;
   opacity: 0;
 }
+@media (max-width: 1300px) {
+  .popup .box {
+    width: 90%;
+  }
+}
+@media (min-width: 371px) and (max-width: 1300px) {
+  .popup .box {
+    width: 80%;
+  }
+}
+@media (min-width: 768px) and (max-width: 1300px) {
+  .popup .box {
+    width: 60%;
+  }
+}
+@media (min-width: 992px) and (max-width: 1300px) {
+  .popup .box {
+    width: 50%;
+  }
+}
+@media (min-width: 1181px) and (max-width: 1300px) {
+  .popup .box {
+    width: 40%;
+  }
+}
 .popup .box .head i {
   font-size: 20px;
 }
 .popup .box form label {
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 600;
 }
 .popup .box form input,
@@ -78,6 +147,30 @@ body {
 .popup .box form input[type=file],
 .popup .box form select[type=file] {
   width: 60%;
+}
+.popup .box form input::placeholder {
+  color: #777;
+}
+.popup .box form .password {
+  position: relative;
+}
+.popup .box form .password i {
+  position: absolute;
+  right: 20px;
+  cursor: pointer;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #fff;
+}
+@media (max-width: 1300px) {
+  .popup .box form button {
+    font-size: 11px;
+  }
+}
+@media (min-width: 576px) and (max-width: 1300px) {
+  .popup .box form button {
+    font-size: initial;
+  }
 }
 .popup.active {
   display: flex;

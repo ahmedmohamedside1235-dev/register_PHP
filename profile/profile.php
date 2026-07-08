@@ -73,6 +73,7 @@ if (empty($_SESSION['user'])) {
                     <hr>
                     <div class="buttons d-flex align-items-center justify-content-center mt-4">
                         <button class="btn btn-success me-2 w-100 d-block" onclick="openPopup('profile')"><i class="fa-solid fa-pen-to-square"></i> Edit Profile</button>
+                        <button class="btn btn-secondary me-2 w-100 d-block" onclick="openPopup('password')"><i class="fa-solid fa-lock"></i> Change password</button>
                     </div>
                 </div>
             </div>
@@ -149,9 +150,66 @@ if (empty($_SESSION['user'])) {
             </div>
         </div>
     </div>
+    <div class="popup" data-name="password">
+        <div class="box py-4 px-4">
+            <div class="head mb-4 d-flex align-items-center justify-content-between">
+                <h2 class="mb-0">Change password</h2>
+                <span class="edit-icon"><i class="fa-solid fa-lock"></i></span>
+            </div>
+            <hr>
+            <div class="body">
+                <form action="../process/update_profile.php?isPassword=true" method="POST" enctype="multipart/form-data">
+                    <!--* input password  -->
+                    <div class="form-group mb-4">
+                        <label class="mb-1 d-block " for="Password">Current password</label>
+                        <div class="password w-100">
+                            <input type="password" placeholder="Enter current password" autocomplete="off" value="" class="form-control" name="password" id="Password">
+                            <i class="fa-solid eye_pass fa-eye-slash" onclick="togglePassword(this,false)"></i>
+                        </div>
+
+                        <!--* error password  -->
+                        <p class="alert mt-1 alert-danger <?php echo isset($_SESSION['error_update']['password']) ? '' : 'd-none'; ?>">
+                            <?php echo $_SESSION['error_update']['password'] ?? ''; ?>
+                        </p>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label class="mb-1 d-block " for="New_password">New password</label>
+                        <div class="password w-100">
+                            <input type="password" placeholder="Create a new password" autocomplete="off" value="" class="form-control" name="New_password" id="New_password">
+                            <i class="fa-solid eye_pass fa-eye-slash" onclick="togglePassword(this,false)"></i>
+                        </div>
+                        <!--* error password  -->
+                        <p class="alert mt-1 alert-danger <?php echo isset($_SESSION['error_update']['New_password']) ? '' : 'd-none'; ?>">
+                            <?php echo $_SESSION['error_update']['New_password'] ?? ''; ?>
+                        </p>
+                    </div>
+
+
+                    <div class="form-group mb-4">
+                        <label class="mb-1 d-block " for="New_password">Confirm new password</label>
+                        <div class="password w-100">
+                            <input type="password" placeholder="Re-enter new password" autocomplete="off" value="" class="form-control" name="Confirm_password" id="Confirm_password">
+                            <i class="fa-solid eye_pass fa-eye-slash" onclick="togglePassword(this,false)"></i>
+                        </div>
+                        <p class="alert mt-1 alert-danger <?php echo isset($_SESSION['error_update']['Confirm_password']) ? '' : 'd-none'; ?>">
+                            <?php echo $_SESSION['error_update']['Confirm_password'] ?? ''; ?>
+                        </p>
+                    </div>
+
+                    <hr>
+                    <div class="form-group d-flex align-items-center justify-content-center">
+                        <button class="btn btn-success text-light fw-bolder me-2" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save Change </button>
+                        <button class="btn btn-secondary text-light fw-bolder " onclick="closePopup()" type="button"><i class="fa-solid fa-times"></i> Cancel </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <script src="../js/sweetAlert.js"></script>
     <script src="../js/bootstrap.js"></script>
     <script src="js/profile.js"></script>
+    <script src="../js/index.js"></script>
 </body>
 
 </html>
