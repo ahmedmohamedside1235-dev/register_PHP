@@ -24,8 +24,6 @@ function checkImage(array &$error_empty, array &$old_values, bool $bool = true)
         }
         return;
     }
-
-
     $file = $_FILES['image'];
     $fileName = $file['name'];
     $fileTmpName = $file['tmp_name'];
@@ -127,7 +125,7 @@ function updateUser(string $name, string $email, string $language)
     ];
     $_SESSION["old_values"] = [];
     $_SESSION["error_update"] = [];
-    header("Location: ../profile/profile.php?bool=updated");
+    header("Location: ../profile/profile.php?bool=updated&update=profile");
     exit;
 }
 
@@ -153,27 +151,13 @@ function validateEmail(array &$error_empty, array &$old_values)
 }
 
 // validate password
-function validatePassword(array &$error_empty, array &$old_values)
+function validatePassword(array &$error_empty, array &$old_values, string $inputName = "password")
 {
-    $password = $_REQUEST['password'] ?? '';
-    $old_values['password'] = $password;
-    $errors = [];
-    if (!preg_match("/^.{8,}$/", $password)) {
-        $errors[] = "* Password must be at least 8 characters long";
-    }
-    if (!preg_match("/(?=.*[A-Z])/", $password)) {
-        $errors[] = "* include at least one uppercase letter ";
-    }
-    if (!preg_match("/(?=.*[a-z])(?=.*\d)/", $password)) {
-        $errors[] = "* include at least one lowercase letter and one number ";
-    }
-    if (!preg_match("/(?=.*[\W_])/", $password)) {
-        $errors[] = "* include at least one special character ";
-    }
-
-    if (!empty($errors)) {
-        $error_empty['password'] = implode('<br>', $errors);
-        return;
+    $password = $_REQUEST[$inputName] ?? '';
+    $old_values[$inputName] = $password;
+    if (!preg_match("/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/", $password)) {
+        $error_empty[$inputName] = "* Password must be at least 8 characters long<br>* include at least one uppercase letter<br>* include at least one lowercase letter and one number<br>* include at least one special character";
+        return false;
     }
     return encryptPassword($password);
 }
@@ -237,23 +221,8 @@ function validateAndUpdatePassword(array &$error_update, array &$old_values)
     }
 
     // check regex password
-    $errors = [];
-    if (!preg_match("/^.{8,}$/", $newPassword)) {
-        $errors[] = "* Password must be at least 8 characters long";
-    }
-    if (!preg_match("/(?=.*[A-Z])/", $newPassword)) {
-        $errors[] = "* include at least one uppercase letter";
-    }
-    if (!preg_match("/(?=.*[a-z])(?=.*\d)/", $newPassword)) {
-        $errors[] = "* include at least one lowercase letter and one number";
-    }
-    if (!preg_match("/(?=.*[\W_])/", $newPassword)) {
-        $errors[] = "* include at least one special character";
-    }
-    if (!empty($errors)) {
-        $error_update['New_password'] = implode('<br>', $errors);
+    if (validatePassword($error_update, $old_values, "New_password") == false)
         return;
-    }
 
     // check if the new password the same Confirm password
     if ($newPassword !== $confirmPassword) {

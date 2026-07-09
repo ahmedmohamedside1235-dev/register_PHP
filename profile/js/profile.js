@@ -1,10 +1,8 @@
 let popups = document.querySelectorAll('.popup'),
     boxs = document.querySelectorAll('.popup .box'),
     html = document.querySelector('html'),
-    popupName = new URLSearchParams(window.location.search).get('update') ?? false,
+    popupName = new URLSearchParams(window.location.search).get('update') ?? "",
     bool = new URLSearchParams(window.location.search).get('bool') ?? "noUpdate";
-
-console.log(popupName, bool);
 
 popups.forEach(popup => {
     popup.addEventListener('click', function (e) {
@@ -19,7 +17,7 @@ boxs.forEach(box => {
 });
 
 
-if (popupName) {
+if (popupName && bool === 'noUpdate') {
     openPopup(`${popupName}`);
     let url = new URL(window.location);
     url.searchParams.delete('update');
@@ -27,17 +25,16 @@ if (popupName) {
 }
 
 if (bool === "updated") {
-    showAlert();
+    showAlert(popupName);
 }
 
-function showAlert() {
+function showAlert(popupName) {
     Swal.fire({
         toast: true,
         position: 'top-end',
         icon: 'success',
         iconColor: '#4ade80',
-        title: 'Profile updated successfully',
-        backgroundColor: "#0000",
+        title: `${popupName} updated successfully`,
         showConfirmButton: false,
         background: '#2c2c2a',
         color: '#fff',
@@ -45,8 +42,8 @@ function showAlert() {
         timerProgressBar: true
     });
     let url = new URL(window.location);
-    console.log(url, document.title);
     url.searchParams.delete('bool');
+    url.searchParams.delete('update');
     window.history.replaceState({}, document.title, url.pathname + url.search);
 }
 function openPopup(popupName) {

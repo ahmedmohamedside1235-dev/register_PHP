@@ -37,7 +37,7 @@ $old_values = [];
 
         unset($_SESSION['error_update']);
         unset($_SESSION['old_values']);
-        header("Location: ../profile/profile.php?bool=updated");
+        header("Location: ../profile/profile.php?bool=updated&update=password");
         exit;
     } 
 
