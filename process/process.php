@@ -18,8 +18,6 @@ require "./functions.php";
         isEmptyInput($error_empty, $old_values, $inputName);
     }
 
-    checkImage($error_empty, $old_values , true);
-
     if (empty($error_empty['name'])) {
         validateName($error_empty, $old_values);
     }
@@ -33,6 +31,11 @@ require "./functions.php";
         $hashedPassword = validatePassword($error_empty, $old_values);
         $_SESSION['hashedPassword'] = $hashedPassword;
     }
+
+    if(empty($error_empty['name']) && empty($error_empty['email']) && empty($error_empty['password']) && empty($error_empty['language']) ){
+        checkImage($error_empty, $old_values , true);
+    }
+
     checkErrors($error_empty, $old_values);
     $_SESSION['errors'] = [];
 })();
